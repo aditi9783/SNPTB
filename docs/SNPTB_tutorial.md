@@ -26,7 +26,11 @@ SNPTB is a collection of python scripts that are to be run in a specific order t
 This tutorial is designed with two things in mind:
 1. The user has little computational experience. If not, I strongly recommend using the Googles to explore the wonderful world of UNIX. It is very straightforward and very little is required to use this tutorial.
 2. The user has access to a high-performance computing cluster (usually available via your university, more on this later) that has the following open-source software pre-installed:
-a) python/2.7.11   b) bowtie2/2.2.6   c) samtools/1.2   d) bcftools/1.2  
+
+a) python/2.7.11   
+b) bowtie2/2.2.6   
+c) samtools/1.2   
+d) bcftools/1.2  
 e) java/1.8.0_66
 
 ### 1.1 Why do I need a high-performance computing cluster (HPCC)? Wait, what is a HPCC?
@@ -106,60 +110,72 @@ $ scp abcdefg@perceval.rutgers.edu:<your project data directory on Perceval> <lo
 
 ### 1.6 Organizing your data.
 
-Now that you have created a new project directory and downloaded the data, you should organize the data such that data for each sample is in a folder that is named after the sample. This is important because multiple files will be generated for each sample and it is best to keep them organized for the sanity’s sake.
+Now that you have created a new project directory and downloaded the data, you should organize the data such that data for each sample is in a folder that is named after the sample. This is important because multiple files will be generated for each sample during the analyses and it is best to keep them organized.
 
-Run the python script organize_data.py to create folders for each of your samples and copy raw sequence data into them. NOTE: To run a python script, you either have to be in the directory that contains the script (recommended) or specify directory path to the script.
+First, lets move to the directory that has all the python scripts. If you are in "SNPTB", just type the following at the prompt.
+```
+$ cd code
+```
 
-$ python organize_data.py
+Now, run the python script organize_data.py to create folders for each of your samples and copy raw sequence data into them. Provide full path to your data directory.
 
-This assumes that your data is in the ‘data’ directory in SNPTB folder. If your data is elsewhere, you can specify the location at the command line:
-
+**NOTE:** To run a python script, you either have to be in the directory that contains the script (recommended) or specify directory path to the script.
+```
+$ python organize_data.py <full path to data directory>
+```
+If the code runs successfully, you will see the following message on the prompt:
+```
 $ python organize_data.py ../test
 Data organization complete.
 0:00:00.479501
-
+```
 The output shows that the code successfully ran without errors in 0.48 seconds.
 
-2. Running the pipeline
-2.1 From raw sequence data to SNP-calling: an overview
+## 2. Running the pipeline
+### 2.1 From raw sequence data to SNP-calling: an overview
 
-Once you have raw sequenced reads, you first need to remove low-quality reads or low-quality regions of good reads. This ‘quality control’ step improves the quality of the downstream analyses. The remaining high-quality reads are then mapped to the reference genome, and SNP calls are made from the mapped reads.
+Once you have the paired-end raw sequenced reads in the fastq format (as is given by Illumina and some other sequencing technologies), you first need to remove low-quality reads or low-quality regions of good reads. This ‘quality control’ step improves the quality of the downstream analyses. The remaining high-quality reads are then mapped to the reference genome, and SNP calls are made from the mapped reads.
 
-2.2 Quality control
+### 2.2 Quality control
 
-During the library preparation of DNA samples for Illumina sequencing, small sequences called ‘adapters’ are ligated to DNA fragments 
+During the library preparation of DNA samples for Illumina sequencing, small sequences called ‘adapters’ are ligated to the DNA fragments 
 
-2.3 Mapping reads to the reference genome……………………………………….
-
+### 2.3 Mapping reads to the reference genome
+```
 $ bowtie2-build H37Rv.fa H37Rv
-
+```
+```
 $ ls 
 H37Rv.1.bt2  H37Rv.3.bt2  H37Rv.fa                 H37Rv_genes.txt   H37Rv_proteins.txt  H37Rv.rev.2.bt2
 H37Rv.2.bt2  H37Rv.4.bt2  H37Rv_gene_features.txt  H37Rv_genpept.gp  H37Rv.rev.1.bt2
+```
+### 2.4 SNP calling
 
-2.4 SNP calling…………………………………………………………………………
-2.2 Doing it all via the job scheduler…………………………………………………
-
-$ sbatch run_SNPTB_pipeline.sh
-squeue -u <netid>
-
-3. Data Analysis: SNP Annotation ………………………………………………..
-3.1 Assessing data quality ……………………………………………………………
+## 3. Data Analysis: SNP Annotation
+### 3.1 Assessing data quality 
+```
 $ python get_avgdepth_genomecov.py /home/ag1349/SNPTB/test/
+```
 
+### 3.2 Understanding the SNP annotation output
 
-
-3.2 Understanding the SNP annotation output
-
-3.3 Compare mutations between two samples ………...…………………………..
-
+### 3.3 Compare mutations between two samples 
+```
 python getpairedmut.py ../output/2017112916_test/SNPs_qscore_200.0.txt ../test/paired_ids.txt
+```
 
+## 4. Doing it all via the job scheduler
+```
+$ sbatch run_SNPTB_pipeline.sh
+```
 
-4. Getting ready to publish
-4.1 What to include in the “Material and Methods” …………………………………
-4.2 Depositing raw and meta-data to databases ……………………………………
-4.3 Citing the pipeline and its dependencies ………………………………………..
+```
+$ squeue -u <netid>
+```
+
+## 5. Getting ready to publish
+### 5.1 What to include in the “Material and Methods” and how to cite the pipeline and its dependencies
+### 5.2 Depositing raw and meta-data to databases ……………………………………
 
 
 
