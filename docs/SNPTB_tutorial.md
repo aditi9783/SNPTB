@@ -232,25 +232,80 @@ You will see output that looks like this:
 ```
 Number of samples to be processed: 2
 
-/home/ag1349/SNPTB/test/D23_S15
+<your_dir_path>/SNPTB/test/D23_S15
 Trimming adapters and doing quality control ...
 Running FastQC ...
-Completed QC analysis. Files are in  /home/ag1349/SNPTB/test/D23_S15/qc
+Completed QC analysis. Files are in  <your_dir_path>/SNPTB/test/D23_S15/qc
 Mapping filtered reads to the reference ...
+[mpileup] 1 samples in 1 input files
+<mpileup> Set max per-file depth to 8000
 SNP calling ...
-Completed read mapping and SNP calling. Files are in  /home/ag1349/SNPTB/test/D23_S15/mapped
+[mpileup] 1 samples in 1 input files
+<mpileup> Set max per-file depth to 8000
+SNP calling ...
+Completed read mapping and SNP calling. Files are in  <your_dir_path>/SNPTB/test/D23_S15/mapped
 
-/home/ag1349/SNPTB/test/A31_S8
+<your_dir_path>/SNPTB/test/A31_S8
 Trimming adapters and doing quality control ...
 Running FastQC ...
-Completed QC analysis. Files are in  /home/ag1349/SNPTB/test/A31_S8/qc
+Completed QC analysis. Files are in  <your_dir_path>/test/A31_S8/qc
 Mapping filtered reads to the reference ...
+[mpileup] 1 samples in 1 input files
+<mpileup> Set max per-file depth to 8000
 SNP calling ...
-Completed read mapping and SNP calling. Files are in  /home/ag1349/SNPTB/test/A31_S8/mapped
+[mpileup] 1 samples in 1 input files
+<mpileup> Set max per-file depth to 8000
+SNP calling ...
+Completed read mapping and SNP calling. Files are in  <your_dir_path>/test/A31_S8/mapped
 Quality control and read mapping complete.
 0:42:03.958316
 ```
 Thus, the script took 42 minutes to do quality control analysis, read mapping, and SNP calling. It also tells you where the quality control output is (the "qc" sub-folder within each sample's directory), and where the read mapping output is (the "mapped" sub-folder within each sample's directory). The SNP calls (the VCF files) are also saved in the "mapped" folder.
+
+Lets check out the directory structre for sample D23_S15:
+
+```
+$ ls ../test/D23_S15
+mapped  qc
+$ ls ../test/D23_S15/qc/
+fastqc.run  s1_pe_fastqc.html  s1_se_fastqc.html  s2_pe_fastqc.html  s2_se_fastqc.html
+qc.run      s1_pe_fastqc.zip   s1_se_fastqc.zip   s2_pe_fastqc.zip   s2_se_fastqc.zip
+$ ls ../test/D23_S15/mapped/
+aln.sorted.bam.mpileup  D23_S15.aln.sorted.bam  D23_S15.aln.sorted.bam.bai  D23_S15.vcf  map.run
+```
+
+Note that the after the analysis is done, the script deletes the raw data fastq.gz files that were stored in the sample directory are deleted (but they are still there in the data directory!). The script also deletes a few other temporarily generated files (such as the filtered reads after quality control). This is important because usually you will have a lot of sequencing data and the script _will_ fail if you run out of space in your HPCC account.
+
+Thus, only two folders remain in each sample directory.
+
+The "qc" folder contains the output of Trimmomatic and FastQC. File 'qc.run' tells you how many reads were there in your data files, and how many low-quality reads were dropped. It also contains some .html files that you can save to you local computer and see the quality of your filtered data, an example can be found here: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/.
+
+The "mapped" folder contains the output of Bowtie2 (the mapped reads) and that of SAMtools and BCFtools (VCF file - SNP calls). The file 'map.run' describes how many reads were successfully mapped and so forth:
+
+```
+$ more ../test/D23_S15/mapped/map.run 
+718668 reads; of these:
+  688540 (95.81%) were paired; of these:
+    59007 (8.57%) aligned concordantly 0 times
+    619168 (89.92%) aligned concordantly exactly 1 time
+    10365 (1.51%) aligned concordantly >1 times
+    ----
+    59007 pairs aligned concordantly 0 times; of these:
+      45017 (76.29%) aligned discordantly 1 time
+    ----
+    13990 pairs aligned 0 times concordantly or discordantly; of these:
+      27980 mates make up the pairs; of these:
+        21023 (75.14%) aligned 0 times
+        4714 (16.85%) aligned exactly 1 time
+        2243 (8.02%) aligned >1 times
+  30128 (4.19%) were unpaired; of these:
+    1242 (4.12%) aligned 0 times
+    28237 (93.72%) aligned exactly 1 time
+    649 (2.15%) aligned >1 times
+98.42% overall alignment rate
+```
+
+Congratulations! You have successfully identified SNPs in your sequencing data! :+1:
 
 ## 3. Data Analysis: SNP Annotation
 
