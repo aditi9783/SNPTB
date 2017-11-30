@@ -1,9 +1,10 @@
 **If you use SNPTB, please add the following information to your manuscript:**
 
 _To the "Material and Methods" section (please rephrase this section in your own words):_
+
 SNPs were identified from the whole genome sequencing data using the bioinformatics pipeline SNPTB [1]. In brief, Trimmomatic (version 0.36) was used to do the quality control analysis and the filtered reads were mapped to the H37Rv reference genome (NCBI Accession AL123456.3) using Bowtie 2 (version 2.2.6) [2,3]. High-confidence SNPs were identified using SAMtools (version 1.2) and BCFtools (version 1.2) [4,5].
 
-_Please cite ALL of the following manuscripts to give due credit to open-source software that SNPTB uses:_
+_Please cite ALL of the following manuscripts to give due credit to the open-source software that SNPTB uses:_
 
 1. SNPTB manuscript
 2. Anthony M. Bolger, Marc Lohse, Bjoern Usadel; Trimmomatic: a flexible trimmer for Illumina sequence data, Bioinformatics, Volume 30, Issue 15, 1 August 2014, Pages 2114–2120
