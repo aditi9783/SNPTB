@@ -305,33 +305,210 @@ $ more ../test/D23_S15/mapped/map.run
 98.42% overall alignment rate
 ```
 
+The variant calling file looks like this:
+```
+##fileformat=VCFv4.2
+##FILTER=<ID=PASS,Description="All filters passed">
+##samtoolsVersion=1.2+htslib-1.2.1
+##samtoolsCommand=samtools mpileup -go D23_S15.bcf -f /home/ag1349/SNPTB/H37Rv/H37Rv.fa aln.sorted.bam
+##reference=file:///home/ag1349/SNPTB/H37Rv/H37Rv.fa
+##contig=<ID=AL123456.3,length=4411532>
+##ALT=<ID=X,Description="Represents allele(s) other than observed.">
+##INFO=<ID=INDEL,Number=0,Type=Flag,Description="Indicates that the variant is an INDEL.">
+##INFO=<ID=IDV,Number=1,Type=Integer,Description="Maximum number of reads supporting an indel">
+##INFO=<ID=IMF,Number=1,Type=Float,Description="Maximum fraction of reads supporting an indel">
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Raw read depth">
+##INFO=<ID=VDB,Number=1,Type=Float,Description="Variant Distance Bias for filtering splice-site artefacts in RNA-seq data (bigger is better)",Version="3">
+##INFO=<ID=RPB,Number=1,Type=Float,Description="Mann-Whitney U test of Read Position Bias (bigger is better)">
+##INFO=<ID=MQB,Number=1,Type=Float,Description="Mann-Whitney U test of Mapping Quality Bias (bigger is better)">
+##INFO=<ID=BQB,Number=1,Type=Float,Description="Mann-Whitney U test of Base Quality Bias (bigger is better)">
+##INFO=<ID=MQSB,Number=1,Type=Float,Description="Mann-Whitney U test of Mapping Quality vs Strand Bias (bigger is better)">
+##INFO=<ID=SGB,Number=1,Type=Float,Description="Segregation based metric.">
+##INFO=<ID=MQ0F,Number=1,Type=Float,Description="Fraction of MQ0 reads (smaller is better)">
+##FORMAT=<ID=PL,Number=G,Type=Integer,Description="List of Phred-scaled genotype likelihoods">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##INFO=<ID=ICB,Number=1,Type=Float,Description="Inbreeding Coefficient Binomial test (bigger is better)">
+##INFO=<ID=HOB,Number=1,Type=Float,Description="Bias in the number of HOMs number (smaller is better)">
+##INFO=<ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
+##INFO=<ID=AN,Number=1,Type=Integer,Description="Total number of alleles in called genotypes">
+##INFO=<ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+##INFO=<ID=MQ,Number=1,Type=Integer,Description="Average mapping quality">
+##bcftools_callVersion=1.2+htslib-1.2.1
+##bcftools_callCommand=call -vm -o D23_S15.vcf D23_S15.bcf
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	aln.sorted.bam
+AL123456.3	1	.	T	G	30.3387	.	DP=2;VDB=0.02;SGB=-0.453602;MQ0F=0;AC=2;AN=2;DP4=0,0,2,0;MQ=42	GT:PL	1/1:58,6,0
+AL123456.3	3	.	G	C	16.986	.	DP=4;VDB=0.02;SGB=-0.453602;RPB=1;MQB=1;BQB=1;MQ0F=0;ICB=1;HOB=0.5;AC=1;AN=2;DP4=1,0,2,0;MQ=36GT:PL	0/1:50,0,15
+AL123456.3	4	.	A	G	26.6778	.	DP=4;VDB=0.0249187;SGB=-0.511536;MQ0F=0;AC=2;AN=2;DP4=0,0,3,0;MQ=36	GT:PL	1/1:59,11,5
+AL123456.3	4	.	A	ATTGA	49.7709	.	INDEL;IDV=2;IMF=0.5;DP=4;VDB=0.02;SGB=-0.453602;MQ0F=0;AC=2;AN=2;DP4=0,0,2,0;MQ=42	GT:PL	1/1:77,6,0
+```
+Thus, at genome position 1, reference base T is subsituted by base G, and this SNP call is made with a quality score (QUAL) of 30.3387.
+
 Congratulations! You have successfully identified SNPs in your sequencing data! :+1:
 
 ## 3. Data Analysis: SNP Annotation
 
 ### 3.1 Assessing data quality 
+
+Now that you have completed data analyses, you want to see how good the read mapping was. The script get_avgdepth_genomecov.py gets the mapping rate from map.run files for each sample, calculates average depth in each sample, as well as % genome that has at least 5, at least 10, and at least 20 reads at a position.
 ```
-$ python get_avgdepth_genomecov.py /home/ag1349/SNPTB/test/
+$ python get_avgdepth_genomecov.py <full path to data directory>
 ```
 
-### 3.2 Understanding the SNP annotation output
+The output is saved in the data directory (here, SNPTB/test) and looks like this:
+```
+$ more ../test/avg_depth_maprate.txt 
+StrainID	Nreads	Map_rate	Npos_withreads	AvgDepth	%GenomeCov_5x	%GenomeCov_10x	%GenomeCov_20x
+D23_S15	718668	98.42%	4371991	33.7377407685	99.1399113127	97.9120725546	93.0430323393
+A31_S8   2382455  98.51%   4380656  113.939117566  99.6821024066  99.3841105076  98.7632902469
+```
+
+### 3.2 SNP annotation
+
+While you can look at the SNPs in the VCF file, the format is cumbersome to look at and there is a lot of information in there that you don't need.
+
+Thus, to extract only high-confidence SNPs from the VCF file (QUAL score > 200, _i.e._ probability that a SNP call is incorrect <1e-20), and to annotate these high-confidence SNPs with information such as the gene name and to know if the mutation is synonymous or non-synonymous, we will run the script snp_annotation.py:
+
+```
+$ python snp_annotation.py <full path to data directory>
+```
+
+This will _create_ a new folder in the SNPTB/output with the following naming convention:
+<Year><Month><Date><Hour>_<data directory name>
+   
+Thus, for our test case that has the data in SNPTB/test, the folder "2017113013_test" is created in the "output" folder of SNPTB.
+
+This folder contains a file called 'SNPs_qscore_200.0.txt' that looks like this (please note this file is a dummy file, and not true output of D23_S15 and A31_S8):
+```
+SNP,D23_S15,A31_S8,gname,mut_effect
+A1977G,0,1,intergenic,NA
+T4013C,1,1,recF_Rv0003,nonsyn_I245T
+G7362C,1,0,gyrA_Rv0006,nonsyn_E21Q
+G7585C,1,1,gyrA_Rv0006,nonsyn_S95T
+G9304A,0,1,gyrA_Rv0006,nonsyn_G668D
+G9516C,1,1,gyrA_Rv0006,nonsyn_E739Q
+C11370T,1,1,intergenic,NA
+A11879G,1,1,_Rv0008c,nonsyn_S145P
+T14785C,1,1,_Rv0012,nonsyn_C233R
+C18064T,1,0,pknA_Rv0015c,syn_
+A24716G,1,1,fhaA_Rv0020c,syn_
+```
+The first line is the header that describes what each column is. Since this file is in a comma separated format, you can also open it in Excel. 
+
+The first column shows the nucleotide mutation and the genomic position where mutation happened. The subsequent columns represent each sample in your data directory, with "1" denoting that the mutation is present in that sample and "0" indicating that the mutation is absent. Second to last column lists the gene name(s) where the mutation is (or if it is in an intergenic region), and the last column shows the functional effect of the mutation: synonymous or non-synonymous. If the mutation is non-synonymous, the WT residue, the codon number, and the mutated residue are indicated.
+
+**Note:** The funtional effect of a mutation is calculated by translating the gene sequence from start to finish and then determining if the mutation changed any residue. _If_ the gene sequence has some untranslated region, it is not taken into consideration.
 
 ### 3.3 Compare mutations between two samples 
+
+If you want to identify SNPs in one sample _relative_ to another sample (for example, if you sequenced your lab wild-type strain and want to find out mutations relative to this wild-type), then you need to create a file like the one in test/paired_ids.
+
+In brief, each line should identify a pair of samples separated by a space. Script getpairedmut.py will then identify mutations in the 'SNPs_qscore_200.0.txt' file that are different in that pair of samples.
+
 ```
-python getpairedmut.py ../output/2017112916_test/SNPs_qscore_200.0.txt ../test/paired_ids.txt
+python getpairedmut.py <full path to your SNPs_qscore_200.0.txt file> <full path to your paired_ids.txt file>
+```
+
+This script will save another file called 'SNPs_qscore_200.0_pair_mutations.txt' in the same folder that has the 'SNPs_qscore_200.0.txt' file. This file looks like this (again, a dummy output):
+```
+
+Pair A31_S8:D23_S15	Num. SNPs different:4
+A1977G	intergenic	NA
+G7362C	gyrA_Rv0006	nonsyn_E21Q
+G9304A	gyrA_Rv0006	nonsyn_G668D
+C18064T	pknA_Rv0015c	syn_
+
 ```
 
 ## 4. Doing it all via the job scheduler
+
+Because sequencing data files are big, the analyses usually takes a lot of time. Because HPCC is a shared resource, they have rules for fair usage. One of those rules is that you _cannot_ run scripts that take a long time (say, more than 30 minutes) from your log-in screen. If your sequencing data has a lot of samples, the qcmap.py script may run for days. 
+
+The alternative (and the better way) is then to run via the "job scheduler". This utlity on the HPCC clusters queues the jobs (running your script = job) that are then run in the background (which means you can log-off and use your computer for other stuff than stare at it for days!).
+
+The folder SNPTB/scheduler has the script run_SNPTB_pipeline.sh that submits your job to the scheduler. It does everything except comparing mutations between two samples (section 3.3).
+
+Added benefit is that now you need to run _one_ script as opposed to three! 
+
+Just like before, you need to load the software modules you'd need (if they are not loaded already, type 'module list' to see which modules are pre-loaded in your environment).
+```
+$ module load python/2.7.11
+$ module load bowtie2/2.2.6
+$ module load samtools/1.2
+$ module load bcftools/1.2
+$ module load java/1.8.0_66
+```
+Now, you need to _update_ the run_SNPTB_pipeline.sh to provide full path to your data directory, as well as change the time requirements of your job. You can open the script for editing using vi:
+```
+$ vi run_SNPTB_pipeline.sh
+``` 
+The script currently asks for 2 hours of computing time:
+```
+#SBATCH -t 2:00:00
+```
+Please be mindful of how much time you ask, if you ask way too much your future jobs may wait in the queue for longer. 
+
+The other thing you need to change is that full path of SNPTB/code folder on your system:
+```
+#SBATCH -D <your_home_directory_path>/SNPTB/code
+```
+Now to run the script (this is a _shell_ script, note the .sh extension), type the following at the prompt:
 ```
 $ sbatch run_SNPTB_pipeline.sh
 ```
+You will see something like this on your screen:
+```
+Submitted batch job 5170110
+```
+This means your job was submitted successfully, and your job id is 5170110.
 
+Now you can log-off from the HPCC, do other stuff, log back in again, and check the status of your job by typing the following:
 ```
 $ squeue -u <netid>
 ```
 
+It prints a message:
+```
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           5170110      main run_SNPT   ag1349  R       0:01      1 node125
+```
+
+This shows that your job has been running (R) for 0:01 seconds. If your job is waiting in the queue, it would show the symbol "Q".
+
+If you don't see your job listed when you type squeue command, it means that either your job was completed successfully or your job was terminated. To check that, you can inspect the SNPTB<jobid>.err and the SNPTB<jobid>.out files in the SNPTB/code folder.
+   
+Note that the SNPTB<jobid>.out file now contains the output of qcmap.py:
+   
+```
+Data organization complete.
+0:00:02.440814
+Number of samples to be processed: 2
+
+/home/ag1349/SNPTB/test/D23_S15
+Trimming adapters and doing quality control ...
+Running FastQC ...
+Completed QC analysis. Files are in  <your_dir_path>/SNPTB/test/D23_S15/qc
+Mapping filtered reads to the reference ...
+SNP calling ...
+Completed read mapping and SNP calling. Files are in  <your_dir_path>/SNPTB/test/D23_S15/mapped
+
+/home/ag1349/SNPTB/test/A31_S8
+Trimming adapters and doing quality control ...
+Running FastQC ...
+Completed QC analysis. Files are in  <your_dir_path>/SNPTB/test/A31_S8/qc
+Mapping filtered reads to the reference ...
+SNP calling ...
+Completed read mapping and SNP calling. Files are in  <your_dir_path>/SNPTB/test/A31_S8/mapped
+Quality control and read mapping complete.
+0:42:03.958316
+```
+
+
 ## 5. Getting ready to publish
 ### 5.1 What to include in the “Material and Methods” and how to cite the pipeline and its dependencies
+
+Please see HOW_TO_CITE for this information. https://github.com/aditi9783/SNPTB/blob/master/HOW_TO_CITE.md
+
 ### 5.2 Depositing raw and meta-data to databases
 
+Here is an excellent resource: https://github.com/faircloth-lab/home/wiki/Submitting-Read-Data-to-NCBI-SRA
 
