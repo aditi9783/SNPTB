@@ -1,0 +1,124 @@
+/bin/lua: /opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: module 'posix' not found:
+	no field package.preload['posix']
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../tools/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../shells/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix/init.lua'
+	no file './posix.lua'
+	no file '/usr/share/lua/5.1/posix.lua'
+	no file '/usr/share/lua/5.1/posix/init.lua'
+	no file '/usr/lib64/lua/5.1/posix.lua'
+	no file '/usr/lib64/lua/5.1/posix/init.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../lib/posix.so'
+	no file './posix.so'
+	no file '/usr/lib64/lua/5.1/posix.so'
+	no file '/usr/lib64/lua/5.1/loadall.so'
+stack traceback:
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/myGlobals.lua:40: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/lmod:76: in main chunk
+	[C]: ?
+/bin/lua: /opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: module 'posix' not found:
+	no field package.preload['posix']
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../tools/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../shells/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix/init.lua'
+	no file './posix.lua'
+	no file '/usr/share/lua/5.1/posix.lua'
+	no file '/usr/share/lua/5.1/posix/init.lua'
+	no file '/usr/lib64/lua/5.1/posix.lua'
+	no file '/usr/lib64/lua/5.1/posix/init.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../lib/posix.so'
+	no file './posix.so'
+	no file '/usr/lib64/lua/5.1/posix.so'
+	no file '/usr/lib64/lua/5.1/loadall.so'
+stack traceback:
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/myGlobals.lua:40: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/lmod:76: in main chunk
+	[C]: ?
+/bin/lua: /opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: module 'posix' not found:
+	no field package.preload['posix']
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../tools/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../shells/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix/init.lua'
+	no file './posix.lua'
+	no file '/usr/share/lua/5.1/posix.lua'
+	no file '/usr/share/lua/5.1/posix/init.lua'
+	no file '/usr/lib64/lua/5.1/posix.lua'
+	no file '/usr/lib64/lua/5.1/posix/init.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../lib/posix.so'
+	no file './posix.so'
+	no file '/usr/lib64/lua/5.1/posix.so'
+	no file '/usr/lib64/lua/5.1/loadall.so'
+stack traceback:
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/myGlobals.lua:40: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/lmod:76: in main chunk
+	[C]: ?
+/bin/lua: /opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: module 'posix' not found:
+	no field package.preload['posix']
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../tools/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../shells/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix/init.lua'
+	no file './posix.lua'
+	no file '/usr/share/lua/5.1/posix.lua'
+	no file '/usr/share/lua/5.1/posix/init.lua'
+	no file '/usr/lib64/lua/5.1/posix.lua'
+	no file '/usr/lib64/lua/5.1/posix/init.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../lib/posix.so'
+	no file './posix.so'
+	no file '/usr/lib64/lua/5.1/posix.so'
+	no file '/usr/lib64/lua/5.1/loadall.so'
+stack traceback:
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/myGlobals.lua:40: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/lmod:76: in main chunk
+	[C]: ?
+/bin/lua: /opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: module 'posix' not found:
+	no field package.preload['posix']
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../tools/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../shells/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix/init.lua'
+	no file './posix.lua'
+	no file '/usr/share/lua/5.1/posix.lua'
+	no file '/usr/share/lua/5.1/posix/init.lua'
+	no file '/usr/lib64/lua/5.1/posix.lua'
+	no file '/usr/lib64/lua/5.1/posix/init.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../lib/posix.so'
+	no file './posix.so'
+	no file '/usr/lib64/lua/5.1/posix.so'
+	no file '/usr/lib64/lua/5.1/loadall.so'
+stack traceback:
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/myGlobals.lua:40: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/lmod:76: in main chunk
+	[C]: ?
+[mpileup] 1 samples in 1 input files
+<mpileup> Set max per-file depth to 8000
+[mpileup] 1 samples in 1 input files
+<mpileup> Set max per-file depth to 8000
+[bam_sort_core] merging from 4 files...
+[mpileup] 1 samples in 1 input files
+<mpileup> Set max per-file depth to 8000
+[mpileup] 1 samples in 1 input files
+<mpileup> Set max per-file depth to 8000

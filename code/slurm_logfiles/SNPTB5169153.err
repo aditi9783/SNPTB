@@ -1,0 +1,143 @@
+/bin/lua: /opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: module 'posix' not found:
+	no field package.preload['posix']
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../tools/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../shells/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix/init.lua'
+	no file './posix.lua'
+	no file '/usr/share/lua/5.1/posix.lua'
+	no file '/usr/share/lua/5.1/posix/init.lua'
+	no file '/usr/lib64/lua/5.1/posix.lua'
+	no file '/usr/lib64/lua/5.1/posix/init.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../lib/posix.so'
+	no file './posix.so'
+	no file '/usr/lib64/lua/5.1/posix.so'
+	no file '/usr/lib64/lua/5.1/loadall.so'
+stack traceback:
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/myGlobals.lua:40: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/lmod:76: in main chunk
+	[C]: ?
+/bin/lua: /opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: module 'posix' not found:
+	no field package.preload['posix']
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../tools/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../shells/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix/init.lua'
+	no file './posix.lua'
+	no file '/usr/share/lua/5.1/posix.lua'
+	no file '/usr/share/lua/5.1/posix/init.lua'
+	no file '/usr/lib64/lua/5.1/posix.lua'
+	no file '/usr/lib64/lua/5.1/posix/init.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../lib/posix.so'
+	no file './posix.so'
+	no file '/usr/lib64/lua/5.1/posix.so'
+	no file '/usr/lib64/lua/5.1/loadall.so'
+stack traceback:
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/myGlobals.lua:40: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/lmod:76: in main chunk
+	[C]: ?
+/bin/lua: /opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: module 'posix' not found:
+	no field package.preload['posix']
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../tools/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../shells/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix/init.lua'
+	no file './posix.lua'
+	no file '/usr/share/lua/5.1/posix.lua'
+	no file '/usr/share/lua/5.1/posix/init.lua'
+	no file '/usr/lib64/lua/5.1/posix.lua'
+	no file '/usr/lib64/lua/5.1/posix/init.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../lib/posix.so'
+	no file './posix.so'
+	no file '/usr/lib64/lua/5.1/posix.so'
+	no file '/usr/lib64/lua/5.1/loadall.so'
+stack traceback:
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/myGlobals.lua:40: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/lmod:76: in main chunk
+	[C]: ?
+/bin/lua: /opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: module 'posix' not found:
+	no field package.preload['posix']
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../tools/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../shells/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix/init.lua'
+	no file './posix.lua'
+	no file '/usr/share/lua/5.1/posix.lua'
+	no file '/usr/share/lua/5.1/posix/init.lua'
+	no file '/usr/lib64/lua/5.1/posix.lua'
+	no file '/usr/lib64/lua/5.1/posix/init.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../lib/posix.so'
+	no file './posix.so'
+	no file '/usr/lib64/lua/5.1/posix.so'
+	no file '/usr/lib64/lua/5.1/loadall.so'
+stack traceback:
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/myGlobals.lua:40: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/lmod:76: in main chunk
+	[C]: ?
+/bin/lua: /opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: module 'posix' not found:
+	no field package.preload['posix']
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../tools/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../shells/posix.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/posix/init.lua'
+	no file './posix.lua'
+	no file '/usr/share/lua/5.1/posix.lua'
+	no file '/usr/share/lua/5.1/posix/init.lua'
+	no file '/usr/lib64/lua/5.1/posix.lua'
+	no file '/usr/lib64/lua/5.1/posix/init.lua'
+	no file '/opt/sw/admin/lmod/lmod/libexec/../lib/posix.so'
+	no file './posix.so'
+	no file '/usr/lib64/lua/5.1/posix.so'
+	no file '/usr/lib64/lua/5.1/loadall.so'
+stack traceback:
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/../tools/fileOps.lua:35: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/myGlobals.lua:40: in main chunk
+	[C]: in function 'require'
+	/opt/sw/admin/lmod/lmod/libexec/lmod:76: in main chunk
+	[C]: ?
+[mpileup] 1 samples in 1 input files
+<mpileup> Set max per-file depth to 8000
+[mpileup] 1 samples in 1 input files
+<mpileup> Set max per-file depth to 8000
+[bam_sort_core] merging from 4 files...
+[mpileup] 1 samples in 1 input files
+<mpileup> Set max per-file depth to 8000
+[mpileup] 1 samples in 1 input files
+<mpileup> Set max per-file depth to 8000
+Traceback (most recent call last):
+  File "snp_annotation.py", line 5, in <module>
+    import matplotlib
+  File "/opt/sw/packages/gcc-4.8.3/python/2.7.11/lib/python2.7/site-packages/matplotlib/__init__.py", line 122, in <module>
+    from matplotlib.cbook import is_string_like, mplDeprecation, dedent, get_label
+  File "/opt/sw/packages/gcc-4.8.3/python/2.7.11/lib/python2.7/site-packages/matplotlib/cbook.py", line 33, in <module>
+    import numpy as np
+  File "/opt/sw/packages/gcc-4.8.3/python/2.7.11/lib/python2.7/site-packages/numpy/__init__.py", line 180, in <module>
+    from . import add_newdocs
+  File "/opt/sw/packages/gcc-4.8.3/python/2.7.11/lib/python2.7/site-packages/numpy/add_newdocs.py", line 13, in <module>
+    from numpy.lib import add_newdoc
+  File "/opt/sw/packages/gcc-4.8.3/python/2.7.11/lib/python2.7/site-packages/numpy/lib/__init__.py", line 8, in <module>
+    from .type_check import *
+  File "/opt/sw/packages/gcc-4.8.3/python/2.7.11/lib/python2.7/site-packages/numpy/lib/type_check.py", line 11, in <module>
+    import numpy.core.numeric as _nx
+  File "/opt/sw/packages/gcc-4.8.3/python/2.7.11/lib/python2.7/site-packages/numpy/core/__init__.py", line 14, in <module>
+    from . import multiarray
+ImportError: libmkl_rt.so: cannot open shared object file: No such file or directory
+srun: error: node124: task 0: Exited with exit code 1
