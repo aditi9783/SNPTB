@@ -4,7 +4,7 @@ A Bioinformatics Pipeline for Analyses of Mycobacterium tuberculosis Whole Genom
 
 Aditi Gupta
 Center for Emerging Pathogens, Rutgers University, Newark NJ 07103
-Email: ag1349@njms.rutgers.edu
+Email: ag1349 [at] njms.rutgers.edu
 
 October 18, 2017
 
