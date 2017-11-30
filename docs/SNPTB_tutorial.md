@@ -1,49 +1,13 @@
-SNPTB Tutorial
+# SNPTB Tutorial
 
-A Bioinformatics Pipeline for Analyses of Mycobacterium tuberculosis Whole Genome Sequencing Data
+_A Bioinformatics Pipeline for Analyses of Mycobacterium tuberculosis Whole Genome Sequencing Data_
 
 
-Aditi Gupta
+**Aditi Gupta**
+
 Center for Emerging Pathogens, Rutgers University, Newark NJ 07103
 
-October 18, 2017
-_hk_
-**hjkhk**
-Please cite as follows:
-
-Table of Contents
-
-0. Disclaimer and Prerequisites
-
-1. Introduction………………………………………………………………………….
-1.1 Why do I need a high-performance computing cluster (HPCC)? Wait, what is an HPCC? ……………………………………………………………………………..
-1.2 Connecting to your university’s HPCC………………………………………….
-1.3 Downloading SNPTB……………………………………………………………..
-1.4 Is directory structure important?....................................................................
-1.5. Downloading your sequencing data to your HPCC account from a hyperlink or from your local computer…………………………………………………………..
-1.6 Organizing your data……………………………………………………………...
-
-2. Running the pipeline ………………...…………………………………………...
-2.1 From raw sequence data to SNP-calling: an overview………………………..
-2.2 Quality control……………………………………………………………………..
-2.3 Mapping reads to the reference genome……………………………………….
-2.4 SNP calling…………………………………………………………………………
-2.2 Doing it all via the job scheduler…………………………………………………
-
-3. Data Analysis: SNP Annotation ………………………………………………..
-3.1 Assessing data quality ……………………………………………………………
-3.2 Understanding the SNP annotation output……………………………………..
-3.3 Compare mutations between two samples ………...…………………………..
-
-4. Getting ready to publish
-4.1 What to include in the “Material and Methods” …………………………………
-4.2 Depositing raw and meta-data to databases ……………………………………
-4.3 Citing the pipeline and its dependencies ………………………………………..
-
-
-
-
-0. Disclaimer and Prerequisites
+## 0. Disclaimer and Prerequisites
 
 All analyses are done with respect to the H37Rv reference genome of M. tuberculosis (NCBI accession ID: AL123456.3). The versions of the open-source software used in this pipeline are indicated and no guarantees are given that the older or newer versions of these software will perform as outlined in this tutorial. The pipeline has been tested on the Illumina HiSeq and MiSeq paired end data. The pipeline in its current form is thus incompatible with single-end sequencing data and data from non-Illumina sequencing technologies.
 
@@ -51,7 +15,7 @@ This tutorial is designed to teach biologists how to run a bioinformatics pipeli
 
 If you use the SNPTB pipeline or any of its associated materials, please cite SNPTB as outlined in the title page. Your support encourages open-source science and is appreciated. 
 
-1. Introduction
+## 1. Introduction
 
 SNPTB is a collection of python scripts that are to be run in a specific order to get the following final outputs from your Illumina whole-genome sequencing data (in “fastq” format) of M. tuberculosis isolates:
 
@@ -65,7 +29,7 @@ This tutorial is designed with two things in mind:
 a) python/2.7.11   b) bowtie2/2.2.6   c) samtools/1.2   d) bcftools/1.2  
 e) java/1.8.0_66
 
-1.1 Why do I need a high-performance computing cluster (HPCC)? Wait, what is a HPCC?
+### 1.1 Why do I need a high-performance computing cluster (HPCC)? Wait, what is a HPCC?
 
 Each computer (including your laptop) has 2 things: memory, so that you can save a lot of data, and computing power, so that you can access data quickly and run programs. A computing cluster is, as the name suggests, a group of computers without the monitors (also called as servers). Using multiple servers together increases the memory as well as computing power of your “computer”. And when these servers are equipped for computationally intensive tasks such as storing and analyzing gigabases of sequencing data, the cluster is affectionately called a high-performance computing cluster (HPCC). 
 
@@ -80,7 +44,7 @@ Access to HPCC greatly simplifies genomics analyses because:
 2. If you have a lot of samples for analyses, the bioinformatics pipeline will be running for days. The job scheduler allows you to run your program “in the background” so that you can log-off after executing your program and check back later.
 3. Sequencing data files are big: from hundreds of megabases to gigabases. Bioinformatics analyses of this data further generates several intermediate and final output files that themselves are tens of hundred of MB. Not only does the HPCC give you the space to store and do the analyses, all data is periodically backed up.
 
-1.2 Connecting to your university’s HPCC.
+### 1.2 Connecting to your university’s HPCC.
 
 In Mac, open Applications>Terminal to access the window where you would see a prompt (the $ sign). 
 
@@ -95,60 +59,52 @@ The user will be prompted for password, and if logging in for the very first tim
 In Windows, you would need to install PUTTY to login to HPCC. 
 
 
-1.3 Downloading SNPTB.
+### 1.3 Downloading SNPTB.
 
-SNPTB is available on GitHub. To download
+SNPTB is available on GitHub. It can be downloaded from https://github.com/aditi9783/SNPTB as a zip file or directly on your UNIX system by typing the following at the prompt:
 
-1.4 Is directory structure important?
+```
+$ git clone https://github.com/aditi9783/SNPTB.git
+```
+
+### 1.4 Is directory structure important?
 
 Yes. Very. Because each sequencing project has multiple samples and the genomics analysis generates multiple files per sample, proper directory structure is essential to keep your data and results organized.
 
-When you download SNPTB, you will see one directory called “SNPTB” that has the following sub-directories: “scripts”, “data”, and “docs”. Within “data”, there is an “example” directory that contains an example sequencing dataset. We will use this dataset in the rest of the tutorial.
+When you download SNPTB, you will see one directory called “SNPTB” that has the following sub-directories: “code”, “data”, "H37Rv", "docs", "output", "scheduler", "software", and "test". The directory “SNPTB” has a README file that describes the contents of each of the sub-directories in SNPTB. This tutorial itself can be found in the “docs”.
 
-The directory “SNPTB” also has a README file that describes the contents of each of the sub-directories in SNPTB. This tutorial itself is present in “docs”.
+I would highly recommend that for each new sequencing project, you create a new directory under data (or any other location where you have space) and download your raw sequence data in that directory. It also pays dividends to follow a naming convention when creating these directories. For example, if I got sequencing data for my persistence project in October of 2017, then I would create a directory with the following name: 102017_AG_Persistence. If you expect to receive data from multiple projects, following a naming convention and having a helpful directory structure will keep you organized.
 
-I would highly recommend that for each new sequencing project, you create a new directory under data and download your raw sequence data in that directory. It also pays dividends to follow a naming convention when creating these directories. For example, if I got sequencing data for my persistence project in October of 2017, then I would create a directory with the following name: 102017_AG_Persistence. If you expect to receive data from multiple projects, following a naming convention and having a helpful directory structure will keep you organized.
+**Note:** Most scientific journals now require that you submit your raw sequenced data as well as some meta-analyses files to a public database. Thus, do not delete your raw sequencing data till you publish your results.
 
-Note: Most scientific journals now require that you submit your raw sequenced data as well as some meta-analyses files to a public database. Thus, do not delete your raw sequencing data till you publish your results.
-
-1.5. Downloading your sequencing data to your HPCC account from a hyperlink or from your local computer.
+### 1.5. Downloading your sequencing data to your HPCC account from a hyperlink or from your local computer.
 
 Now that you have downloaded SNPTB and created a new directory for your project, you can download your data in this new directory.
 
-1.5.1 Downloading data from hyperlinks
+#### 1.5.1 Downloading data from hyperlinks
 Most genomics cores send you hyperlinks to your sequencing data that you can directly download to your data directory on HPCC. Lets say your genomics core sent you an html page with links to your sequencing data that looks like this.
 
-<put snapshot of NYU link>
+https://genome.med.nyu.edu/results/external/rutgers/2017-06-16/fastq/
 
-and your data can be accessed via the link:
+Copy the link for the data file you want to use, and download the data directly to your HPCC account using the “wget” command (make sure you are in your project data directory before you download the data):
+```
+$ wget https://genome.med.nyu.edu/results/external/rutgers/2017-06-16/fastq/1_S1_L003_R1_001.fastq.gz . 
+```
+The dot above is a symbol for “current directory”. Thus, the data will be downloaded into the directory where you currently are (if not sure where you are, type 'pwd', short for _print working directory_, and you will see the full path of your current directory).
 
-<snapshot of right click>
+#### 1.5.2 Downloading data from your local computer
 
-then you can download the data directly to HPCC using the “wget” command (make sure you are in your project data directory before you download the data):
-
-$ wget <hyperlink> . 
-
-The dot above is a symbol for “current directory”. Thus, the data will be downloaded into the directory where you are.
-
-To download all the sequencing data from the html page, execute the python script <>
-
-1.5.2 Downloading data from your local computer
-
-If you have sequencing data on your local computer, you can copy it to your project data directory on the HPCC by the scp command. Scp syntax is same as that of the UNIX cp command.
-
+If you have sequencing data on your local computer, you can copy it to your project data directory on the HPCC using the 'scp' command. Scp syntax is same as that of the UNIX cp command.
+```
 $ scp <local directory> abcdefg@perceval.rutgers.edu:<your project data directory on Perceval>
+```
 
 Files can be copied from your directory on HPCC to your local computer by the following command:
-
+```
 $ scp abcdefg@perceval.rutgers.edu:<your project data directory on Perceval> <local directory>
+```
 
-1.5.3 Downloading data from public databases
-
-Public databases such as NCBI and EBI (European Bioinformatics Institute) have thousands of whole genome sequences of M. tuberculosis. These datasets can be downloaded using the python script. (include python script, covert it to python3, and edit it so that it asks users for list of NCBI accession ids).
-
-When prompted, provide the name for the text file that contains the NCBI accession ids such that each line has a single id. Please see <this-file> for format.
-
-1.6 Organizing your data.
+### 1.6 Organizing your data.
 
 Now that you have created a new project directory and downloaded the data, you should organize the data such that data for each sample is in a folder that is named after the sample. This is important because multiple files will be generated for each sample and it is best to keep them organized for the sanity’s sake.
 
