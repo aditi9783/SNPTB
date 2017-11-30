@@ -1,6 +1,6 @@
 **If you use SNPTB, please add the following information to your manuscript:**
 
-_To the "Material and Methods" section (please rephrase this section):_
+_"Material and Methods" (please rephrase in your own words):_
 
 SNPs were identified from the whole genome sequencing data using the bioinformatics pipeline SNPTB [1]. In brief, Trimmomatic (version 0.36) was used to do the quality control analysis and the filtered reads were mapped to the H37Rv reference genome (NCBI Accession AL123456.3) using Bowtie 2 (version 2.2.6) [2,3]. High-confidence SNPs were identified using SAMtools (version 1.2) and BCFtools (version 1.2) [4,5].
 
