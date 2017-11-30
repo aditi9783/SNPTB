@@ -14,7 +14,7 @@ module load samtools/1.2
 module load bcftools/1.2
 module load java/1.8.0_66
 
-srun python organize_data.py /home/ag1349/SNPTB/test
-srun python qcmap.py /home/ag1349/SNPTB/test
-srun python get_avgdepth_genomecov.py /home/ag1349/SNPTB/test
-srun python snp_annotation.py /home/ag1349/SNPTB/test
+srun python organize_data.py <full path to data directory>
+srun python qcmap.py <full path to data directory>
+srun python get_avgdepth_genomecov.py <full path to data directory>
+srun python snp_annotation.py <full path to data directory>
