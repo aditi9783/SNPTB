@@ -85,7 +85,9 @@ In Mac, open Applications>Terminal to access the window where you would see a pr
 
 At the prompt, use your NetID and password to log in to the HPCC. For example, user with NetID “abcdefg” can access into the Perceval cluster of HPCC by typing:
 
+```
 $ ssh abcdefg@perceval.rutgers.edu
+```
 
 The user will be prompted for password, and if logging in for the very first time, will see a message asking for accepting “encryption key”. Type yes, and your first login is complete!
 
