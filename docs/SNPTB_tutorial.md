@@ -92,9 +92,9 @@ https://genome.med.nyu.edu/results/external/rutgers/2017-06-16/fastq/
 
 Copy the link for the data file you want to use, and download the data directly to your HPCC account using the “wget” command (make sure you are in your project data directory before you download the data):
 ```
-$ wget https://genome.med.nyu.edu/results/external/rutgers/2017-06-16/fastq/1_S1_L003_R1_001.fastq.gz . 
+$ wget https://genome.med.nyu.edu/results/external/rutgers/2017-06-16/fastq/1_S1_L003_R1_001.fastq.gz 
 ```
-The dot above is a symbol for “current directory”. Thus, the data will be downloaded into the directory where you currently are (if not sure where you are, type 'pwd', short for _print working directory_, and you will see the full path of your current directory).
+The data will be downloaded into the directory where you currently are (if not sure where you are, type 'pwd', short for _print working directory_, and you will see the full path of your current directory).
 
 #### 1.5.2 Downloading data from your local computer
 
@@ -108,7 +108,8 @@ Files can be copied from your directory on HPCC to your local computer by the fo
 $ scp abcdefg@perceval.rutgers.edu:<your project data directory on Perceval> <local directory>
 ```
 
-### 1.6 Organizing your data.
+## 2. Running the pipeline
+### 2.1 Organizing your data.
 
 Now that you have created a new project directory and downloaded the data, you should organize the data such that data for each sample is in a folder that is named after the sample. This is important because multiple files will be generated for each sample during the analyses and it is best to keep them organized.
 
@@ -123,7 +124,13 @@ Now, run the python script organize_data.py to create folders for each of your s
 ```
 $ python organize_data.py <full path to data directory>
 ```
-If the code runs successfully, you will see the following message on the prompt:
+Lets say you have some data in the fastq.gz format in the "test" folder, and it looks liks this:
+```
+$ ls ../test/
+A31_S8_R1_001.fastq.gz  A31_S8_R2_001.fastq.gz  D23_S15_R1_001.fastq.gz  D23_S15_R2_001.fastq.gz
+```
+
+To organize the data, type the following at the prompt (assuming you are in the "code" directory):
 ```
 $ python organize_data.py ../test
 Data organization complete.
@@ -131,27 +138,122 @@ Data organization complete.
 ```
 The output shows that the code successfully ran without errors in 0.48 seconds.
 
-## 2. Running the pipeline
-### 2.1 From raw sequence data to SNP-calling: an overview
+The data is now organized into subfolders that are named after the sample names:
+```
+$ ls ../test/
+A31_S8  A31_S8_R1_001.fastq.gz  A31_S8_R2_001.fastq.gz  D23_S15  D23_S15_R1_001.fastq.gz  D23_S15_R2_001.fastq.gz
+
+$ ls ../test/D23_S15
+D23_S15_R1_001.fastq.gz  D23_S15_R2_001.fastq.gz
+
+$ ls ../test/A31_S8
+A31_S8_R1_001.fastq.gz  A31_S8_R2_001.fastq.gz
+```
+Two new subfolders are created: A31_S8 and D23_S15. The corresponding fastq.gz files are copied into sample folders and are not deleted from the /test/ folder because you want to save a copy of your data till you submit it to the public databases at the time of manuscript preparation.
+
+
+### 2.2 From raw sequence data to SNP-calling: an overview
 
 Once you have the paired-end raw sequenced reads in the fastq format (as is given by Illumina and some other sequencing technologies), you first need to remove low-quality reads or low-quality regions of good reads. This ‘quality control’ step improves the quality of the downstream analyses. The remaining high-quality reads are then mapped to the reference genome, and SNP calls are made from the mapped reads.
 
-### 2.2 Quality control
+### 2.3 Quality control, mapping reads to the reference genome, and calling SNPs
 
-During the library preparation of DNA samples for Illumina sequencing, small sequences called ‘adapters’ are ligated to the DNA fragments 
+#### 2.3.1 Quality Control
+During the library preparation of DNA samples for Illumina sequencing, small sequences called ‘adapters’ are ligated to the DNA fragments. To remove these adapters, and to remove low quality reads, SNPTB uses the open-source software Trimmomatic. The quality of the filtered reads are assessed using FastQC.
 
-### 2.3 Mapping reads to the reference genome
+#### 2.3.2 Read Mapping
+Next step is to map the reads to the reference genome (_Mycobacterium tuberculosis_ H37Rv, NCBI Accession: AL123456.3) using Bowtie2. Before we can map the reads, Bowtie2 requires that you index the reference genome for faster lookup of sequence regions (indexes you see at the end of the books is a good analogy I think). This step has already been done, and the reference genome (.fa file) and the index files (.bt2 files) are stored in the "H37Rv" folder. 
+
+This folder also contains additional files for the H37Rv (all downloaded from the NCBI) that are used in the SNP annotation step: the GenBank file, gene and protein sequence files, and so forth. The file 'gene_loci.txt' contains the gene start and end coordiantes. 
+You can look at the contents of the "H37Rv" folder from the "code" folder location by typing the following at the prompt:
+
 ```
-$ bowtie2-build H37Rv.fa H37Rv
+$ ls ../H37Rv/
+genes_loci.txt  H37Rv.2.bt2  H37Rv.4.bt2  H37Rv.fa.fai             H37Rv_genes.txt   H37Rv_proteins.txt  H37Rv.rev.2.bt2
+H37Rv.1.bt2     H37Rv.3.bt2  H37Rv.fa     H37Rv_gene_features.txt  H37Rv_genpept.gp  H37Rv.rev.1.bt2
 ```
+#### 2.3.3 SNP Calling
+After we map the reads to the reference genome, high confidence SNPs (probability that a SNP call is incorrect <1e-20) are identified using SAMTools and BCFtools. The output is stored in the Variant Calling Format (VCF file). 
+
+A single script (qcmap.py) does all of these three steps: quality control, read mapping, and SNP calling. It _creates_ folders "qc" and "mapped" that contains the output files. Let's go over this step-by-step.
+
+First, lets get access to the open-source software that SNPTB uses. Trimmomatic and FastQC are pre-packaged with SNPTB and thus you don't have to worry about it. But you need to get access to Bowtie2, SAMtools, and BCFtools. You have to do this before you run the qcmap.py script because qcmap.py _depends_ on these software. The benefit of working on the HPCC is that these are pre-installed (if not, you can request the HPCC staff and they will either install it for the entire cluster or will help you install it locally in your directory.
+
+Because a lot of software are installed on the HPCC, you explicitly _load_ the ones that you need.
+
+To see what softwares are installed on your HPCC cluster, type the following:
 ```
-$ ls 
-H37Rv.1.bt2  H37Rv.3.bt2  H37Rv.fa                 H37Rv_genes.txt   H37Rv_proteins.txt  H37Rv.rev.2.bt2
-H37Rv.2.bt2  H37Rv.4.bt2  H37Rv_gene_features.txt  H37Rv_genpept.gp  H37Rv.rev.1.bt2
+$ module avail
+
+----------------------------------------------------------- /opt/sw/modulefiles/Core -----------------------------------------------------------
+   ARACNE/20110228         bowtie2/2.2.6             gcc/4.9.4               intel_mkl/17.0.1        pgi/16.10           (D)
+   HISAT2/2.0.4            bowtie2/2.2.9      (D)    gcc/5.3                 intel_mkl/17.0.2        python/2.7.11
+   HISAT2/2.1.0     (D)    bwa/0.7.12                gcc/5.4          (D)    java/1.7.0_79           python/2.7.12
+   MATLAB/R2017a           bwa/0.7.13         (D)    hdf5/1.8.16             java/1.8.0_66           python/3.5.0
+   Mathematica/11.1        cuda/7.5                  intel/16.0.1            java/1.8.0_73           python/3.5.2        (D)
+   OpenCV/2.3.1            cuda/8.0                  intel/16.0.3     (D)    java/1.8.0_121          samtools/0.1.19
+   STAR/2.5.2a             cuda/9.0           (D)    intel/17.0.0            java/1.8.0_141   (D)    samtools/1.2
+   Trinotate/2.0.2         cudnn/7.0.3               intel/17.0.1            modeller/9.16           samtools/1.3.1      (D)
+   bamtools/2.4.0          cufflinks/2.2.1           intel/17.0.2            moe/2016.0802           trinityrnaseq/2.1.1
+   bcftools/1.2            delly/0.7.6               intel/17.0.4            mvapich2/2.1
+   bedtools2/2.25.0        gaussian/g03revE01        intel_mkl/16.0.1        mvapich2/2.2     (D)
+   blast/2.6.0             gaussian/09revD01  (D)    intel_mkl/16.0.3 (D)    openmpi/2.1.1
+   blat/35                 gcc/4.9.3                 intel_mkl/17.0.0        pgi/16.9
+
+--------------------------------------------------- /opt/sw/admin/lmod/lmod/modulefiles/Core ---------------------------------------------------
+   lmod/6.0.1    settarg/6.0.1
+
+  Where:
+   (D):  Default Module
+
+Use "module spider" to find all possible modules.
+Use "module keyword key1 key2 ..." to search for all possible modules matching any of the "keys".
+
 ```
-### 2.4 SNP calling
+To see which software are loaded in _your working environment_:
+```
+$ module list
+No modules loaded
+```
+Now lets load the ones we would need:
+```
+$ module load python/2.7.11
+$ module load bowtie2/2.2.6
+$ module load samtools/1.2
+$ module load bcftools/1.2
+$ module load java/1.8.0_66
+```
+
+We are now ready to run the qcmap.py script. 
+```
+$ python qcmap.py <full path to data directory>
+```
+You will see output that looks like this:
+```
+Number of samples to be processed: 2
+
+/home/ag1349/SNPTB/test/D23_S15
+Trimming adapters and doing quality control ...
+Running FastQC ...
+Completed QC analysis. Files are in  /home/ag1349/SNPTB/test/D23_S15/qc
+Mapping filtered reads to the reference ...
+SNP calling ...
+Completed read mapping and SNP calling. Files are in  /home/ag1349/SNPTB/test/D23_S15/mapped
+
+/home/ag1349/SNPTB/test/A31_S8
+Trimming adapters and doing quality control ...
+Running FastQC ...
+Completed QC analysis. Files are in  /home/ag1349/SNPTB/test/A31_S8/qc
+Mapping filtered reads to the reference ...
+SNP calling ...
+Completed read mapping and SNP calling. Files are in  /home/ag1349/SNPTB/test/A31_S8/mapped
+Quality control and read mapping complete.
+0:42:03.958316
+```
+Thus, the script took 42 minutes to do quality control analysis, read mapping, and SNP calling. It also tells you where the quality control output is (the "qc" sub-folder within each sample's directory), and where the read mapping output is (the "mapped" sub-folder within each sample's directory). The SNP calls (the VCF files) are also saved in the "mapped" folder.
 
 ## 3. Data Analysis: SNP Annotation
+
 ### 3.1 Assessing data quality 
 ```
 $ python get_avgdepth_genomecov.py /home/ag1349/SNPTB/test/
@@ -175,7 +277,6 @@ $ squeue -u <netid>
 
 ## 5. Getting ready to publish
 ### 5.1 What to include in the “Material and Methods” and how to cite the pipeline and its dependencies
-### 5.2 Depositing raw and meta-data to databases ……………………………………
-
+### 5.2 Depositing raw and meta-data to databases
 
 
