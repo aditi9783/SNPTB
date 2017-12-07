@@ -15,3 +15,8 @@ REFERENCES
 3. Langmead B, Salzberg S. Fast gapped-read alignment with Bowtie 2. Nature Methods. 2012, 9:357-359
 4. Li H, A statistical framework for SNP calling, mutation discovery, association mapping and population genetical parameter estimation from sequencing data, Bioinformatics (2011) 27(21) 2987-93.
 5. BCFtools/RoH: a hidden Markov model approach for detecting autozygosity from next-generation sequencing data. Narasimhan V, Danecek P, Scally A, Xue Y, Tyler-Smith C and Durbin R Bioinformatics (Oxford, England) 2016;32;11;1749-51
+
+
+_Acknowledgements_
+
+Please acknowledge the support of the Office of Adavanced Computing Research (OARC) at Rutgers for providing the computational resources. 
