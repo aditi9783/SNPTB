@@ -19,4 +19,6 @@ REFERENCES
 
 _Acknowledgements_
 
-Please acknowledge the support of the Office of Adavanced Computing Research (OARC) at Rutgers for providing the computational resources. 
+Please acknowledge the support of the high performance computing center at your university if you used their resources. 
+
+If you are at Rutgers, please acknowledge the Office of Adavanced Research Computing (OARC) at Rutgers for providing the computational resources and expertise.
