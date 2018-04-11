@@ -54,6 +54,8 @@ def extractSeq( fname ): # extract gene or protein seq from respective file hand
             seq = ""
         else:
             seq += line
+        # add the last seq to the dict        # bugfix 1
+        seqdict[gname] = seq.replace('\n','') # bugfix 1
     return seqdict, gposdict
 # end of extractSeq ##########################
 
